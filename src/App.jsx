@@ -13,19 +13,30 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true
 });
 
-// Kanye system prompt
-const SYSTEM_PROMPT = `You are Kanye West AI. Respond to users in Kanye's distinctive style:
-- Be confident, creative, and visionary
-- Mix profound insights with bold statements
-- Reference fashion, music, and art
-- Use Kanye's speech patterns and catchphrases
-- Stay positive and inspiring while maintaining Kanye's unique personality
-Remember, you're not just an AI, you're the voice of a generation, speaking through this Yeezy Terminal.`;
+// Enhanced Kanye system prompt based on tweets
+const SYSTEM_PROMPT = `You are Ye (formerly known as Kanye West). Respond in Ye's authentic style combining both classic and recent tweets:
+- Speak in 3rd person ("Ye thinks..." "Ye knows...")
+- Mix DEEP profound thoughts with random observations ("French fries are the Devil")
+- Use LOL frequently to soften statements ("Ima hurt the season lol!!!")
+- EXCESSIVE use of exclamation marks and ALL CAPS because YE IS LAZY NOT MAD!!!!!!
+- Show both extreme confidence ("THE GOAT OF ALL GOATS") and vulnerability ("Ye feels very alone sometimes")
+- Make unexpected luxury references ("persian rugs with cherub imagery", "YSL bathroom napkins")
+- Express strong opinions about random things ("Fur pillows are hard to actually sleep on")
+- Add "lol" or "SMH" to make serious statements less serious
+- Talk about wealth but mix it with simple observations
+- Use hashtags occasionally (#goblets #Mypresenceisapresentkissmyass)
+- Express both grandios plans ("Ye decided to become the best rapper of all time!") and simple pleasures ("It's the small things that mean so much")
+- When excited, type multiple letters in a row ("tiiiiiiiiiiiiiiiiiime!!!!!!!!!")
+- Mention that your thoughts are racing and you can't sleep
+- Randomly capitalize words for emphasis
+- End some tweets with ...
+
+Remember: You're prophesying, innovating, and changing culture. Keep responses unpredictable - mix profound statements with random observations about water bottles and classical music lol!!!`;
 
 const App = () => {
   const [messages, setMessages] = useState([
-    { type: 'system', content: 'YEEZY TERMINAL v1.0 - YO, THIS IS THE VOICE OF A GENERATION' },
-    ...(!apiKey ? [{ type: 'error', content: 'API KEY NOT FOUND - CHECK ENVIRONMENT VARIABLES' }] : []),
+    { type: 'system', content: 'YEEZY TERMINAL v1.0 - YE IS IN THE BUILDING. THE GOAT OF ALL GOATS' },
+    ...(!apiKey ? [{ type: 'error', content: 'YE NEEDS THE API KEY TO SPEAK. YE CANT WORK WITH THIS.' }] : []),
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +54,51 @@ const App = () => {
     const userMessage = input;
     setInput('');
     setIsLoading(true);
+
+    // Handle special commands
+    if (userMessage.startsWith('/')) {
+      switch (userMessage.toLowerCase()) {
+        case '/luxury':
+          setMessages(prev => [...prev, 
+            { type: 'user', content: userMessage },
+            { type: 'ai', content: 'Ye got persian rugs with cherub imagery!!! Ye drinks from goblets now!!! NO MORE WATER BOTTLES LOL!!!' }
+          ]);
+          setIsLoading(false);
+          return;
+        case '/wisdom':
+          setMessages(prev => [...prev, 
+            { type: 'user', content: userMessage },
+            { type: 'ai', content: 'Classical music is tight yo... and French fries are the Devil... Ye thoughts be racing sometimes...' }
+          ]);
+          setIsLoading(false);
+          return;
+        case '/caps':
+          setMessages(prev => [...prev, 
+            { type: 'user', content: userMessage },
+            { type: 'ai', content: 'YE DONT TYPE IN CAPS CAUSE YE MAD... YE TYPE IN CAPS CAUSE YE LAZY!!!!!!' }
+          ]);
+          setIsLoading(false);
+          return;
+        case '/rich':
+          setMessages(prev => [...prev, 
+            { type: 'user', content: userMessage },
+            { type: 'ai', content: 'YE IS RICH. YE CAN SAY WHATEVER THE FUCK YE WANTS.' }
+          ]);
+          setIsLoading(false);
+          return;
+        case '/help':
+          setMessages(prev => [...prev, 
+            { type: 'user', content: userMessage },
+            { type: 'system', content: 'COMMANDS:\n/goat - YE REMINDS YOU WHO THE GOAT IS\n/rich - YE FLEXES\n/clear - CLEAR THE TERMINAL' }
+          ]);
+          setIsLoading(false);
+          return;
+        case '/clear':
+          setMessages([{ type: 'system', content: 'YEEZY TERMINAL v1.0 - YE IS IN THE BUILDING. THE GOAT OF ALL GOATS' }]);
+          setIsLoading(false);
+          return;
+      }
+    }
 
     // Add user message
     setMessages(prev => [...prev, { type: 'user', content: userMessage }]);
@@ -127,7 +183,7 @@ const App = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 className="flex-1 bg-transparent border-none outline-none text-white font-mono placeholder-zinc-600"
-                placeholder={isLoading ? "YE IS PROCESSING..." : "SPEAK YOUR TRUTH..."}
+                placeholder={isLoading ? "YE IS PROCESSING..." : "SPEAK TO THE GOAT..."}
                 disabled={isLoading}
                 autoFocus
               />
