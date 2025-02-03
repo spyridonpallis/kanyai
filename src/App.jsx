@@ -2,8 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Terminal, Loader } from 'lucide-react';
 import OpenAI from 'openai';
 
+// Check if API key exists
+const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+if (!apiKey) {
+  console.error('OpenAI API key not found. Please set VITE_OPENAI_API_KEY in environment variables.');
+}
+
 const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+  apiKey: apiKey || 'dummy-key',
   dangerouslyAllowBrowser: true
 });
 
@@ -19,6 +25,7 @@ Remember, you're not just an AI, you're the voice of a generation, speaking thro
 const App = () => {
   const [messages, setMessages] = useState([
     { type: 'system', content: 'YEEZY TERMINAL v1.0 - YO, THIS IS THE VOICE OF A GENERATION' },
+    ...(!apiKey ? [{ type: 'error', content: 'API KEY NOT FOUND - CHECK ENVIRONMENT VARIABLES' }] : []),
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
